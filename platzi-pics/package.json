@@ -1,0 +1,14 @@
+{
+  "name": "platzi-pics",
+  "version": "0.1.0",
+  "description": "Aplicativo de electron para visualizacion de imagenes",
+  "main": "index.js",
+  "scripts": {
+    "dev": "electron index.js"
+  },
+  "author": "byron7cueva <byron7cueva@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^10.1.2"
+  }
+}
