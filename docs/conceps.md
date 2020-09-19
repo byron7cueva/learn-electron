@@ -31,3 +31,7 @@ Se debe instalar lo siguiente, esto instala las dependencias para compilar modul
 npm install --global windows-build-tools
 ```
 
+## Cargar contenido
+
+* Como es una ventana de un navegador, se puede cargar contenido local (html local) o externo (urls externas).
+* Cuando es contenido local la carga es inmediata, pero cuando se carga contenido remoto se depende de la red.

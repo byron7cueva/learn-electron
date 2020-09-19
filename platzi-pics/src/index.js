@@ -51,5 +51,8 @@ app.on('ready', () => {
   })
 
   // Cargando contenido en la ventana
-  win.loadURL('http://devdocs.io/')
+  // Url externa
+  // win.loadURL('http://devdocs.io/')
+  // Recurso local
+  win.loadURL(`file://${__dirname}/renderer/index.html`)
 })
