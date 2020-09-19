@@ -1,0 +1,33 @@
+# Electron
+
+* Es un framework para crear aplicaciones de escritotio con tecnologias web.
+
+* Lo crearon github, para crear atom editor.
+
+* MacOS (cocoa)
+
+* Windows (Windos Form)
+
+* Linux (gtk o qt)
+
+* Necesita node.js y chromiun para funcionar.
+
+  * Node.js se encarga del proceso principal. Es el encargado de conectar con todas las partes nativas del sistema operativo, como los menus, los dialogos, las ventanas, todos estos componentes que son nativos del Sistema operativo.
+  * Chromiun, permite ver el contenido visual.
+
+* Comunicación entre procesos (IPC).
+
+  * Esta permite la comuncación entre el proceso principal que esta corriendo en node.js y el proceso de rendeizado.
+
+  ![image-20200919171321900](./assets/ipc.png)
+
+## Herramientas
+
+### Windows
+
+Se debe instalar lo siguiente, esto instala las dependencias para compilar modulos para ello necesita c y python.
+
+```bash
+npm install --global windows-build-tools
+```
+
