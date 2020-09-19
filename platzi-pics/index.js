@@ -5,7 +5,7 @@
 // reiniciarla entre otras acciones
 
 // BrowserWindow: Es el que va permitirnos cargar todo el contenido
-// visualmente de la aplicacion
+// visualmente de la aplicacion, permite crear ventanas.
 const {app, BrowserWindow} = require('electron')
 
 // Ver lo que tiene el objeto
@@ -18,7 +18,29 @@ app.on('before-quit', () => {
 
 // Para poder mostrar la ventana de debe esperar que la aplicacione esta lista
 app.on('ready', () => {
-  let win = new BrowserWindow()
+  let win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    title: 'Hola mundo',
+    center: true,
+    maximizable: false,
+    show: false
+  })
+
+  //Evento que se ejecuta cuando la ventana es movida
+  win.on('move', () => {
+    const position = win.getPosition()
+    console.log(`la posicion de la ventana es ${position}`)
+  })
+
+  // ready-to-show
+  // Espera que el contenido sea cargado antes de mostrar la ventana
+  //on los eventos se ejecutan multiples veces
+  //once se ejecuta una sola vez
+  win.once('ready-to-show', () => {
+    // Una vez que esta listo el contenido se muestra la ventana
+    win.show()
+  })
 
   // Cuando la ventana sea cerrada
   win.on('close', () => {
@@ -27,4 +49,7 @@ app.on('ready', () => {
     win = null
     app.quit()
   })
+
+  // Cargando contenido en la ventana
+  win.loadURL('http://devdocs.io/')
 })
