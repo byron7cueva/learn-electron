@@ -5,13 +5,13 @@
 // BrowserWindow: Es el que va permitirnos cargar todo el contenido
 // visualmente de la aplicacion, permite crear ventanas.
 import { app, BrowserWindow } from "electron";
-import * as path from "path";
+import path from "path";
 import * as url from "url";
 
 // Ver lo que tiene el objeto
 // console.dir(app)
 
-let mainWindow: Electron.BrowserWindow | null;
+let mainWindow: Electron.BrowserWindow | undefined;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -24,12 +24,13 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
+      // worldSafeExecuteJavaScript: true
     },
   });
 
   // Evento que se ejecuta cuando la ventana es movida
   mainWindow.on('move', () => {
-    const position = mainWindow.getPosition();
+    const position = mainWindow?.getPosition();
     console.log(`la posicion de la ventana es ${position}`);
   });
 
@@ -39,7 +40,7 @@ function createWindow() {
   // once se ejecuta una sola vez
   mainWindow.once('ready-to-show', () => {
     // Una vez que esta listo el contenido se muestra la ventana
-    mainWindow.show();
+    mainWindow?.show();
   });
 
 
@@ -48,7 +49,7 @@ function createWindow() {
     // Se asigna a null con el fin que no queden recursos
     // en memoria del objeto que visualiza en la ventana
     console.log('Cerrada');
-    mainWindow = null;
+    mainWindow = undefined;
     app.quit();
   });
 
