@@ -40,3 +40,11 @@ npm install --global windows-build-tools
 
 * Permite escribir en diferentes tecnologías que no estan soportadas de forma nativa en html y compila el código en tiempo de ejecucion para despreocuparse de ese paso.
 
+*cross-env:* Módulo para que se utilice las variables de entorno sin importar como se definen en los distintos sistemas operativos.
+
+```json
+"dev": "cross-env NODE_ENV=development electron src/index.js"
+```
+
+
+
