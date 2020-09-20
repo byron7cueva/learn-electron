@@ -35,3 +35,8 @@ npm install --global windows-build-tools
 
 * Como es una ventana de un navegador, se puede cargar contenido local (html local) o externo (urls externas).
 * Cuando es contenido local la carga es inmediata, pero cuando se carga contenido remoto se depende de la red.
+
+## Electron compile
+
+* Permite escribir en diferentes tecnologías que no estan soportadas de forma nativa en html y compila el código en tiempo de ejecucion para despreocuparse de ese paso.
+
