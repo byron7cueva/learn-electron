@@ -56,3 +56,7 @@ npm install --global windows-build-tools
 * *photonkit.com:* Los componentes son muy similares a los de MacOS.
 * *Xel:* Esta hecho para aplicativos de electron, parecido a material design. Utiliza templates esta basado en webcomponents
 
+## JavaScript en el Frontend
+
+* Tenemos acceso al API: DOM, de nodejs y de electron.
+
