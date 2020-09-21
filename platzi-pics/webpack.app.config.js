@@ -27,12 +27,15 @@ module.exports = {
       },
       {
         test: /\.(jpg|png|gif|woff|eot|ttf|svg)$/,
-        use: {
-          loader: 'url-loader',
-          options: {
-           limit: 1000
-          }
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+                name: "[path][name].[ext]",
+                esModule: false
+            }
         }
+        ]
       }
     ],
   },
