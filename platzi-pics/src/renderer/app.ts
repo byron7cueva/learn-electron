@@ -1,11 +1,20 @@
 import 'photonkit/dist/css/photon.css';
 import '../assets/css/main.css';
+import './lib/filterous2-2.0.0.min.js';
 
 import url, {Url} from 'url';
 import path from 'path';
 
+import applyFilter from './filters';
+
 type HTMLImageElementOrNull = HTMLImageElement | null;
 type HTMLElementOrNull = HTMLElement | null;
+
+window.addEventListener('load', () => {
+  addImageEvents();
+  searchImagesEvent();
+  selectEvent();
+});
 
 /**
  * Add the events to image list
@@ -81,7 +90,9 @@ function selectFirstImage() {
   changeImage(image);
 }
 
-window.addEventListener('load', () => {
-  addImageEvents();
-  searchImagesEvent();
-});
+function selectEvent() {
+  const select: HTMLSelectElement = document.querySelector('#filters');
+  select.addEventListener('change', function() {
+    applyFilter(this.value, document.querySelector('#image-displayed'));
+  });
+}
