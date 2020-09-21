@@ -60,3 +60,8 @@ npm install --global windows-build-tools
 
 * Tenemos acceso al API: DOM, de nodejs y de electron.
 
+## Comunicación Proceso principal y proceso de renderizado.
+
+* ipcRender: Es el objeto que corre en el proceso de renderizado y permite comunicarse con el main process.
+* ipcMain: Protocolo de comunicación para el proceso principal.
+

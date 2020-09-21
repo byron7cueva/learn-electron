@@ -4,7 +4,12 @@
 
 // BrowserWindow: Es el que va permitirnos cargar todo el contenido
 // visualmente de la aplicacion, permite crear ventanas.
-import { app, BrowserWindow } from "electron";
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  IpcMainEvent
+} from "electron";
 import path from "path";
 import * as url from "url";
 
@@ -15,7 +20,7 @@ import devtools from './devtools';
 let mainWindow: Electron.BrowserWindow | undefined;
 
 /**
- *
+ * Create the principal window
  */
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -72,9 +77,17 @@ function createWindow() {
 }
 
 /**
- *
+ * Main process listening ping event
  */
-function quitApp() {
+ipcMain.on('ping', (event: IpcMainEvent, args) => {
+  console.log(`Se recibio ping - ${args}`);
+  event.sender.send('pong', new Date());
+})
+
+/**
+ * Funtion execute when quit application
+ */
+function quitApp(): void {
   console.log('Saliendo')
 }
 

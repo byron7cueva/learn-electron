@@ -6,14 +6,17 @@ import url, {Url} from 'url';
 import path from 'path';
 
 import applyFilter from './filters';
+import {setIpc, sendIpc} from './ipcRendererEvents';
 
 type HTMLImageElementOrNull = HTMLImageElement | null;
 type HTMLElementOrNull = HTMLElement | null;
 
 window.addEventListener('load', () => {
+  setIpc();
   addImageEvents();
   searchImagesEvent();
   selectEvent();
+  openDirectory();
 });
 
 /**
@@ -85,14 +88,27 @@ function searchImagesEvent() {
 /**
  * Select first image don't hidden
  */
-function selectFirstImage() {
+function selectFirstImage(): void {
   const image: HTMLElement = document.querySelector('li.list-group-item:not(.hidden)');
   changeImage(image);
 }
 
-function selectEvent() {
+/**
+ * Event to selected filter
+ */
+function selectEvent(): void {
   const select: HTMLSelectElement = document.querySelector('#filters');
   select.addEventListener('change', function() {
     applyFilter(this.value, document.querySelector('#image-displayed'));
   });
+}
+
+/**
+ * Event to click open directory
+ */
+function openDirectory(): void {
+  const openDirectory: HTMLButtonElement = document.querySelector('#open-directory');
+  openDirectory.addEventListener('click', () => {
+    sendIpc();
+  })
 }
