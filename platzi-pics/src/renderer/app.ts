@@ -25,16 +25,19 @@ function addImageEvents(): void {
  * @param {HTMLElement} node li selected from list images
  */
 function changeImage(node: HTMLElementOrNull): void {
-  if (node === null) return;
-  const liSelected: HTMLElement | null = document.querySelector('li.selected');
-  if (liSelected) {
-    liSelected.classList.remove('selected');
-  }
-  node.classList.add('selected');
   const imageDisplayed: HTMLImageElementOrNull = document.querySelector('#image-displayed');
-  const imgNode: HTMLImageElementOrNull = node.querySelector('img')
-  if (imageDisplayed && imgNode) {
-    imageDisplayed.src = imgNode.src;
+  if (node) {
+    const liSelected: HTMLElement | null = document.querySelector('li.selected');
+    if (liSelected) {
+      liSelected.classList.remove('selected');
+    }
+    node.classList.add('selected');
+    const imgNode: HTMLImageElementOrNull = node.querySelector('img')
+    if (imageDisplayed && imgNode) {
+      imageDisplayed.src = imgNode.src;
+    }
+  } else {
+    imageDisplayed.src = '';
   }
 }
 
@@ -47,8 +50,8 @@ function searchImagesEvent() {
   if (searchBox) {
     searchBox.addEventListener('keyup', function() {
       const regex = new RegExp(this.value.toLowerCase(),'gi');
-      const thumbs: NodeListOf<HTMLImageElement> = document.querySelectorAll('li.list-group-item img');
       if (this.value.length > 0) {
+        const thumbs: NodeListOf<HTMLImageElement> = document.querySelectorAll('li.list-group-item img');
         thumbs.forEach(thumb => {
           const fileUrl: Url = url.parse(thumb.src);
           const fileName = path.basename(fileUrl.pathname);
@@ -60,9 +63,9 @@ function searchImagesEvent() {
           }
         });
       } else {
+        const thumbs: NodeListOf<HTMLElement> = document.querySelectorAll('li.hidden');
         thumbs.forEach(thumb => {
-          const parentNode = (thumb.parentNode as HTMLElement);
-          parentNode.classList.remove('hidden');
+          thumb.classList.remove('hidden');
         });
       }
       selectFirstImage();
