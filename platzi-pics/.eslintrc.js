@@ -22,12 +22,14 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    ecmaVersion: 'es2020',
     project: './tsconfig.eslint.json',
     sourceType: 'script',
     // debugLevel: true,
     createDefaultProgram: true
   },
   rules: {
+    'import/no-unresolved': 'off',
     'unicorn/filename-case': [
       'warn',
       {

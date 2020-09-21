@@ -8,11 +8,15 @@ import { app, BrowserWindow } from "electron";
 import path from "path";
 import * as url from "url";
 
+import devtools from './devtools';
+
 // Ver lo que tiene el objeto
 // console.dir(app)
-
 let mainWindow: Electron.BrowserWindow | undefined;
 
+/**
+ *
+ */
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
@@ -54,10 +58,10 @@ function createWindow() {
   });
 
   if (process.env.NODE_ENV === "development") {
-    mainWindow.loadURL(`http://localhost:4000`);
-    mainWindow.webContents.openDevTools();
+    void mainWindow.loadURL(`http://localhost:4000`);
+    devtools(mainWindow);
   } else {
-    mainWindow.loadURL(
+    void mainWindow.loadURL(
       url.format({
         pathname: path.join(__dirname, "index.html"),
         protocol: "file:",
@@ -67,6 +71,9 @@ function createWindow() {
   }
 }
 
+/**
+ *
+ */
 function quitApp() {
   console.log('Saliendo')
 }

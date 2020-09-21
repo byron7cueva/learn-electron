@@ -1,5 +1,5 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   resolve: {
@@ -24,6 +24,15 @@ module.exports = {
           'style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.(jpg|png|gif|woff|eot|ttf|svg)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+           limit: 1000
+          }
+        }
       }
     ],
   },

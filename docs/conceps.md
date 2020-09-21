@@ -46,5 +46,13 @@ npm install --global windows-build-tools
 "dev": "cross-env NODE_ENV=development electron src/index.js"
 ```
 
+### Módulos deprecados
 
+* *electron-debug:* Se utiliza para habilitar las herramientas de chrome dev tools, agrega unos shorcups para lanzar la devtools,
+* *devtron:* Son las herreamientas oficiales de Electron para hacer debug de la aplicación.
+
+### Frameworks para aplicaciones de escritorio
+
+* *photonkit.com:* Los componentes son muy similares a los de MacOS.
+* *Xel:* Esta hecho para aplicativos de electron, parecido a material design. Utiliza templates esta basado en webcomponents
 
