@@ -35,7 +35,7 @@ function createWindow() {
   // Evento que se ejecuta cuando la ventana es movida
   mainWindow.on('move', () => {
     const position = mainWindow?.getPosition();
-    console.log(`la posicion de la ventana es ${position}`);
+    // console.log(`la posicion de la ventana es ${position}`);
   });
 
   // ready-to-show
