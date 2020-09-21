@@ -3,6 +3,9 @@ import '../assets/css/main.css';
 
 type HTMLImageElementOrNull = HTMLImageElement | null;
 
+/**
+ * Add the events to image list
+ */
 function addImageEvents() {
   const thumbs: NodeListOf<HTMLElement> = document.querySelectorAll('li.list-group-item');
   thumbs.forEach(thumb => {
@@ -12,6 +15,11 @@ function addImageEvents() {
   })
 }
 
+/**
+ * Change principal image
+ * 
+ * @param {HTMLElement} node li selected from list images
+ */
 function changeImage(node: HTMLElement) {
   const liSelected: HTMLElement | null = document.querySelector('li.selected');
   if (liSelected) {
