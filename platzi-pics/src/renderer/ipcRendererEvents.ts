@@ -8,7 +8,7 @@ import {
   clearImages,
   loadImages
 } from './imagesUi';
-import { LiImage } from './LiImage';
+import { LiImage } from '../types/LiImage';
 import { saveImage } from './filters';
 
 /**
@@ -55,12 +55,19 @@ function openDirectory(): void {
  */
 function saveFile(): void {
   const image: HTMLImageElement | null = document.querySelector('#image-displayed');
-  if (image) {
+  if (image && image.dataset.original) {
     const ext = path.extname(image.dataset.original);
     ipcRenderer.send('open-save-dialog', ext);
   }
 }
 
+/**
+ * Launch dialod message
+ * 
+ * @param {string} type Type of dialog
+ * @param {string} title Title of dialog
+ * @param {string} message Message of dialog
+ */
 function showDialod(type: string, title: string, message: string): void {
   ipcRenderer.send('show-dialog', {type, title, message});
 }

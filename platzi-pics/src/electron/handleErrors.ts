@@ -21,8 +21,8 @@ async function relaunchApp(mainWindow: BrowserWindow) {
     });
     app.relaunch();
     app.exit(0);
-  } catch(error) {
-    console.error(error.message);
+  } catch(error: unknown) {
+    console.error(error);
   }
 }
 

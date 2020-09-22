@@ -2,7 +2,7 @@ import url, {Url} from 'url';
 import path from 'path';
 
 import {applyFilter} from './filters';
-import { LiImage } from './LiImage';
+import { LiImage } from '../types/LiImage';
 
 type HTMLImageElementOrNull = HTMLImageElement | null;
 type HTMLElementOrNull = HTMLElement | null;
@@ -45,7 +45,7 @@ function changeImage(liElement: HTMLElementOrNull): void {
   }
 
   const select: HTMLSelectElement | null = document.querySelector('#filters');
-  select.selectedIndex = 0;
+  if (select) select.selectedIndex = 0;
 }
 
 /**
@@ -94,8 +94,8 @@ function searchImagesEvent(): void {
 function selectEvent(): void {
   const select: HTMLSelectElement | null = document.querySelector('#filters');
   select?.addEventListener('change', function() {
-    const imgELement: HTMLImageElement = document.querySelector('#image-displayed');
-    applyFilter(this.value, imgELement);
+    const imgELement: HTMLImageElement | null = document.querySelector('#image-displayed');
+    if (imgELement) applyFilter(this.value, imgELement);
   });
 }
 

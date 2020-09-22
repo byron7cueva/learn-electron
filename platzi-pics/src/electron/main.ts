@@ -7,20 +7,15 @@
 import {
   app,
   BrowserWindow,
-  ipcMain,
-  IpcMainEvent,
-  dialog,
   protocol,
   ProtocolRequest,
 } from "electron";
 import path from "path";
 import * as url from "url";
-import fs from 'fs';
-import isImage from 'is-image';
-import fileSize from 'filesize';
 
 import devtools from './devtools';
 import handleErrors from './handleErrors';
+import setupHandleMainEvents from './ipcMainEvents';
 
 // Ver lo que tiene el objeto
 // console.dir(app)
@@ -51,11 +46,12 @@ function createWindow() {
     },
   });
 
+  setupHandleMainEvents(mainWindow);
   handleErrors(mainWindow);
 
   // Evento que se ejecuta cuando la ventana es movida
   mainWindow.on('move', () => {
-    const position = mainWindow?.getPosition();
+    // const position = mainWindow?.getPosition();
     // console.log(`la posicion de la ventana es ${position}`);
   });
 
@@ -78,7 +74,7 @@ function createWindow() {
     app.quit();
   });
 
-  let indexPath: string = '';
+  let indexPath = '';
   if(process.env.NODE_ENV === "development") {
     indexPath = url.format({
       protocol: 'http:',
@@ -96,68 +92,6 @@ function createWindow() {
   }
   void mainWindow.loadURL(indexPath);
 }
-
-/**
- * Main process listening ping event
- */
-ipcMain.on('ping', (event: IpcMainEvent, args) => {
-  console.log(`Se recibio ping - ${args}`);
-  event.sender.send('pong', new Date());
-});
-
-ipcMain.on('open-directory', async (event: IpcMainEvent) => {
-  try {
-    const dir = await dialog.showOpenDialog(mainWindow, {
-      title: 'Seleccione la nueva ubicación',
-      buttonLabel: 'Abrir ubicación',
-      properties: ['openDirectory']
-    });
-    let images: object[] = [];
-    if (dir.canceled && dir.filePaths.length > 0) {
-      const directory = dir.filePaths[0];
-      fs.readdir(dir.filePaths[0], (error: NodeJS.ErrnoException | null, files: string[]): void => {
-        if (error) throw error;
-
-        files.forEach((filename: string) => {
-          if (isImage(filename)) {
-            const imageFile = path.join(directory, filename);
-            const stats = fs.statSync(imageFile);
-            const size = fileSize(stats.size, {round: 0});
-            images.push({filename, src: `file://${imageFile}`, size});
-          }
-        });
-        event.sender.send('load-images', images);
-      });
-    }    
-  } catch(error: Error) {
-    console.error(error.message)
-  }
-});
-
-ipcMain.on('open-save-dialog', async (event: IpcMainEvent, ext: string) => {
-  try {
-    const result = await dialog.showSaveDialog(mainWindow, {
-      title: 'Guardar imagen modificada',
-      buttonLabel: 'Guardar imagen',
-      filters: [{name: 'Images', extensions: [ext.substr(1)]}],
-      defaultPath: `name${ext}`,
-    });
-    if(result.canceled) return;
-
-    event.sender.send('save-image', result.filePath);
-  } catch(error) {
-    console.error(error.message)
-  }
-});
-
-ipcMain.on('show-dialog', (event: IpcMainEvent, options: any) => {
-  dialog.showMessageBox(mainWindow, {
-    type: options.type,
-    title: options.title,
-    message: options.message,
-    buttons: ['Ok']
-  });
-});
 
 /**
  * Funtion execute when quit application
