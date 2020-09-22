@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import filterous from "./lib/filterous2-2.0.0.min";
-import fs from 'fs';
+import fs from 'fs-extra';
 
 /**
  * Apply filter to image
@@ -28,8 +28,13 @@ function saveImage(fileName: string, callback: (error: NodeJS.ErrnoException | n
   const image: HTMLImageElement | null = document.querySelector('#image-displayed');
   if (image) {
     let fileSource = image.src;
-    fileSource = fileSource?.replace(/^data:([+/A-Za-z-]+);base64,/,'');
-    fs.writeFile(fileName, fileSource, 'base64', callback)
+    if (fileSource.includes(';base64,')) {
+      fileSource = fileSource?.replace(/^data:([+/A-Za-z-]+);base64,/,'');
+      fs.writeFile(fileName, fileSource, 'base64', callback)
+    } else if (fileSource.includes('file://')) {
+      fileSource = fileSource.replace('file://', '');
+      fs.copy(fileSource, fileName, callback);
+    }
   }
 }
 

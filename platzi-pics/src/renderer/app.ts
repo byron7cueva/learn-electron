@@ -9,7 +9,8 @@ import {
 import {
   addImageEvents,
   searchImagesEvent,
-  selectEvent
+  selectEvent,
+  selectFirstImage,
 } from './imagesUi';
 
 window.addEventListener('load', () => {
@@ -17,6 +18,7 @@ window.addEventListener('load', () => {
   addImageEvents();
   searchImagesEvent();
   selectEvent();
+  selectFirstImage();
   handleClickEvent('open-directory', openDirectory);
   handleClickEvent('save-button', saveFile);
 });
