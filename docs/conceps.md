@@ -76,3 +76,9 @@ npm install --global windows-build-tools
 * Desde el proceso de renderizado permite llamar a partes del API del proceso principal, como por ejemplo: BrowserWindow
 * Se llama desde el proceso de renderizado pero esta utilizando el proceso principal.
 
+## Guardar información de preferencias
+
+* El local storage tiene un problema ya que no esta disponible en el proceso principal. Tendría que compartirce la información a través de IPC.
+* Sqlite
+* Archivo en una ruta especifica. Electron ofrece una forma de guardar en las preferencias del usuario.
+

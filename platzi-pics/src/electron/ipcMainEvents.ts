@@ -34,27 +34,17 @@ function setupHandleEvents(mainWindow: BrowserWindow): void {
       properties: ['openDirectory']
     })
     .then(result => {
-      const images: LiImage[] = [];
       if (!result.canceled && result.filePaths.length > 0) {
-        const directory = result.filePaths[0];
-        fs.readdir(result.filePaths[0], (error: NodeJS.ErrnoException | null, files: string[]): void => {
-          if (error) throw error;
-
-          files.forEach((filename: string) => {
-            if (isImage(filename)) {
-              const imageFile = path.join(directory, filename);
-              const stats = fs.statSync(imageFile);
-              const size = fileSize(stats.size, {round: 0});
-              images.push({filename, src: `file://${imageFile}`, size});
-            }
-          });
-          event.sender.send('load-images', images);
-        });
-    }   
+        loadImages(event, result.filePaths[0]);
+      }
     })
     .catch(error => {
       console.error(error);
     })
+  });
+
+  ipcMain.on('load-directory', (event: IpcMainEvent, directory: string) => {
+    loadImages(event, directory);
   });
 
   ipcMain.on('open-save-dialog', (event: IpcMainEvent, extension: string) => {
@@ -81,6 +71,24 @@ function setupHandleEvents(mainWindow: BrowserWindow): void {
       message: options.message,
       buttons: ['Ok']
     });
+  });
+}
+
+function loadImages(event: IpcMainEvent, filePath: string) {
+  const images: LiImage[] = [];
+  const directory = filePath;
+  fs.readdir(filePath, (error: NodeJS.ErrnoException | null, files: string[]): void => {
+    if (error) throw error;
+
+    files.forEach((filename: string) => {
+      if (isImage(filename)) {
+        const imageFile = path.join(directory, filename);
+        const stats = fs.statSync(imageFile);
+        const size = fileSize(stats.size, {round: 0});
+        images.push({filename, src: `file://${imageFile}`, size});
+      }
+    });
+    event.sender.send('load-images', filePath, images);
   });
 }
 

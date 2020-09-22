@@ -2,7 +2,7 @@
 import { ipcRenderer, IpcRendererEvent, remote } from 'electron';
 import path from 'path';
 import * as url from "url";
-//import os from 'os';
+import settings from 'electron-settings';
 
 import {
   addImageEvents,
@@ -18,17 +18,16 @@ const { BrowserWindow } = remote;
 /**
  * On the lintening pong event
  */
-function setIpc(): void {
-  // Render process listening pong event
-  ipcRenderer.on('pong', (event: IpcRendererEvent, args: string) => {
-    console.log(`pong recibido ${args}`)
-  });
-
-  ipcRenderer.on('load-images', (event: IpcRendererEvent, images: LiImage[]) => {
+async function setIpc(): Promise<void> {
+  ipcRenderer.on('load-images', (event: IpcRendererEvent, directory: string, images: LiImage[]) => {
     clearImages();
     loadImages(images);
     addImageEvents();
     selectFirstImage();
+    void settings.set('directory', directory)
+    .then(() => {
+      console.log(settings.file());
+    });
   });
 
   ipcRenderer.on('save-image', (event: IpcRendererEvent, file: string) => {
@@ -37,14 +36,12 @@ function setIpc(): void {
       showDialod('info', 'Platzipics', 'La imagen fue guardada');
     });
   });
-}
 
-/**
- * Send to main process ping event
- */
-function sendIpc(): void {
-  // Send data to main process by ping event
-  ipcRenderer.send('ping', new Date());
+  const has = await settings.has('directory');
+  if (has) {
+    const directory = await settings.get('directory');
+    ipcRenderer.send('load-directory', directory);
+  }
 }
 
 /**
@@ -130,7 +127,6 @@ function openPreferences(): void {
 
 export {
   setIpc,
-  sendIpc,
   openDirectory,
   saveFile,
   openPreferences
