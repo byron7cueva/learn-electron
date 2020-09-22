@@ -35,7 +35,7 @@ function sendIpc(): void {
 }
 
 /**
- * 
+ * Event to emit to main process for open directory 
  */
 function openDirectory(): void {
   ipcRenderer.send('open-directory');
