@@ -34,8 +34,12 @@ module.exports = {
                 name: "[path][name].[ext]",
                 esModule: false
             }
-        }
-        ]
+          }
+        ],
+      },
+      {
+        test: require.resolve('./src/renderer/lib/filterous2-2.0.0.min.js'),
+        use: 'exports-loader?exports=default|filterous',
       }
     ],
   },

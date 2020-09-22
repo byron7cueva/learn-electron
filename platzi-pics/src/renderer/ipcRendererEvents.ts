@@ -1,14 +1,29 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 import { ipcRenderer, IpcRendererEvent } from 'electron';
 
+import {
+  addImageEvents,
+  selectFirstImage,
+  clearImages,
+  loadImages
+} from './imagesUi';
+import { LiImage } from './LiImage';
+
 /**
  * On the lintening pong event
  */
 function setIpc(): void {
   // Render process listening pong event
-  ipcRenderer.on('pong', (event: IpcRendererEvent, args: any) => {
+  ipcRenderer.on('pong', (event: IpcRendererEvent, args: string) => {
     console.log(`pong recibido ${args}`)
-  })
+  });
+
+  ipcRenderer.on('load-images', (event: IpcRendererEvent, images: LiImage[]) => {
+    clearImages();
+    loadImages(images);
+    addImageEvents();
+    selectFirstImage();
+  });
 }
 
 /**
@@ -19,7 +34,15 @@ function sendIpc(): void {
   ipcRenderer.send('ping', new Date());
 }
 
+/**
+ * 
+ */
+function openDirectory(): void {
+  ipcRenderer.send('open-directory');
+}
+
 export {
   setIpc,
-  sendIpc
+  sendIpc,
+  openDirectory
 }
