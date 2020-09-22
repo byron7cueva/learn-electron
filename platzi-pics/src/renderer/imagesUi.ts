@@ -15,25 +15,25 @@ function addImageEvents(): void {
   thumbs.forEach(thumb => {
     thumb.addEventListener('click', function() {
       changeImage(this);
-    })
-  })
+    });
+  });
 }
 
 /**
  * Change principal image
  * 
- * @param {HTMLElement} node li selected from list images
+ * @param {HTMLElement} liElement li selected from list images
  */
-function changeImage(node: HTMLElementOrNull): void {
+function changeImage(liElement: HTMLElementOrNull): void {
   const imageDisplayed: HTMLImageElementOrNull = document.querySelector('#image-displayed');
   let source = '';
-  if (node) {
+  if (liElement) {
     const liSelected: HTMLElement | null = document.querySelector('li.selected');
     if (liSelected) {
       liSelected.classList.remove('selected');
     }
-    node.classList.add('selected');
-    const imgNode: HTMLImageElementOrNull = node.querySelector('img')
+    liElement.classList.add('selected');
+    const imgNode: HTMLImageElementOrNull = liElement.querySelector('img')
     if (imgNode) {
       source = imgNode.src;
     }
@@ -88,9 +88,10 @@ function searchImagesEvent(): void {
  * Event to selected filter
  */
 function selectEvent(): void {
-  const select: HTMLSelectElement = document.querySelector('#filters');
-  select.addEventListener('change', function() {
-    applyFilter(this.value, document.querySelector('#image-displayed'));
+  const select: HTMLSelectElement | null = document.querySelector('#filters');
+  select?.addEventListener('change', function() {
+    const imgELement: HTMLImageElement = document.querySelector('#image-displayed');
+    applyFilter(this.value, imgELement);
   });
 }
 
