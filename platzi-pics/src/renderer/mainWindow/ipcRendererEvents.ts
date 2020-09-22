@@ -1,6 +1,7 @@
 /* eslint-disable unicorn/prevent-abbreviations */
-import { ipcRenderer, IpcRendererEvent } from 'electron';
+import { ipcRenderer, IpcRendererEvent, remote } from 'electron';
 import path from 'path';
+import * as url from "url";
 
 import {
   addImageEvents,
@@ -8,8 +9,10 @@ import {
   clearImages,
   loadImages
 } from './imagesUi';
-import { LiImage } from '../types/LiImage';
+import { LiImage } from '../../types/LiImage';
 import { saveImage } from './filters';
+
+const { BrowserWindow } = remote;
 
 /**
  * On the lintening pong event
@@ -72,9 +75,56 @@ function showDialod(type: string, title: string, message: string): void {
   ipcRenderer.send('show-dialog', {type, title, message});
 }
 
+/**
+ * Open dialog preferencies
+ */
+function openPreferences(): void {
+  const preferencesWindow = new BrowserWindow({
+    width: 400,
+    height: 300,
+    title: 'Preferences',
+    center: true,
+    modal: true,
+    // No tiene barra de titulo
+    frame: false,
+    show: false,
+    // Accediendo a la pantalla principal a traves de una variable global
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    parent: remote.getGlobal('mainWindow'),
+    webPreferences: {
+      nodeIntegration: true,
+      enableRemoteModule: true
+    }
+  });
+
+  let indexPath = '';
+  if(process.env.NODE_ENV === "development") {
+    indexPath = url.format({
+      protocol: 'http:',
+      host: 'localhost:4000',
+      pathname: 'preferences.html',
+      slashes: true
+    });
+  } else {
+    indexPath = url.format({
+      protocol: "file:",
+      pathname: path.join(__dirname, "preferences.html"),
+      slashes: true,
+    });
+  }
+  void preferencesWindow.loadURL(indexPath);
+
+  preferencesWindow.webContents.once('did-frame-finish-load', () => {
+    preferencesWindow.show();
+    preferencesWindow.focus();
+    // preferencesWindow.webContents.openDevTools();
+  });
+}
+
 export {
   setIpc,
   sendIpc,
   openDirectory,
-  saveFile
+  saveFile,
+  openPreferences
 }

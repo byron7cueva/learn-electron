@@ -19,7 +19,12 @@ import setupHandleMainEvents from './ipcMainEvents';
 
 // Ver lo que tiene el objeto
 // console.dir(app)
-let mainWindow: Electron.BrowserWindow | undefined;
+
+// Definiendo una variable global
+declare global {
+  // eslint-disable-next-line no-var
+  var mainWindow: BrowserWindow | undefined;
+}
 
 /**
  * Create the principal window
@@ -31,7 +36,7 @@ function createWindow() {
     callback(pathname);
   });
 
-  mainWindow = new BrowserWindow({
+  globalThis.mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     title: 'Hola mundo',
@@ -42,15 +47,17 @@ function createWindow() {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
       webSecurity: false,
+      // Habilitando remote module
+      enableRemoteModule: true,
       // worldSafeExecuteJavaScript: true
     },
   });
 
-  setupHandleMainEvents(mainWindow);
-  handleErrors(mainWindow);
+  setupHandleMainEvents(globalThis.mainWindow);
+  handleErrors(globalThis.mainWindow);
 
   // Evento que se ejecuta cuando la ventana es movida
-  mainWindow.on('move', () => {
+  globalThis.mainWindow.on('move', () => {
     // const position = mainWindow?.getPosition();
     // console.log(`la posicion de la ventana es ${position}`);
   });
@@ -59,18 +66,18 @@ function createWindow() {
   // Espera que el contenido sea cargado antes de mostrar la ventana
   // on los eventos se ejecutan multiples veces
   // once se ejecuta una sola vez
-  mainWindow.once('ready-to-show', () => {
+  globalThis.mainWindow.once('ready-to-show', () => {
     // Una vez que esta listo el contenido se muestra la ventana
-    mainWindow?.show();
+    globalThis.mainWindow?.show();
   });
 
 
   // Cuando la ventana sea cerrada
-  mainWindow.on('closed', () => {
+  globalThis.mainWindow.on('closed', () => {
     // Se asigna a null con el fin que no queden recursos
     // en memoria del objeto que visualiza en la ventana
     console.log('Cerrada');
-    mainWindow = undefined;
+    globalThis.mainWindow = undefined;
     app.quit();
   });
 
@@ -82,7 +89,7 @@ function createWindow() {
       pathname: 'index.html',
       slashes: true
     });
-    devtools(mainWindow);
+    devtools(globalThis.mainWindow);
   } else {
     indexPath = url.format({
       protocol: "file:",
@@ -90,7 +97,7 @@ function createWindow() {
       slashes: true,
     });
   }
-  void mainWindow.loadURL(indexPath);
+  void globalThis.mainWindow.loadURL(indexPath);
 }
 
 /**

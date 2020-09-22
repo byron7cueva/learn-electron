@@ -71,3 +71,8 @@ npm install --global windows-build-tools
 * unresponsive: Cuando la pantalla no responde
 * uncaughtException: Son las excepciones que no fueron manejadas.
 
+## Module remote
+
+* Desde el proceso de renderizado permite llamar a partes del API del proceso principal, como por ejemplo: BrowserWindow
+* Se llama desde el proceso de renderizado pero esta utilizando el proceso principal.
+

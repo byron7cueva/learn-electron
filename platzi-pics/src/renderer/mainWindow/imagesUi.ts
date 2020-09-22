@@ -2,7 +2,7 @@ import url, {Url} from 'url';
 import path from 'path';
 
 import {applyFilter} from './filters';
-import { LiImage } from '../types/LiImage';
+import { LiImage } from '../../types/LiImage';
 
 type HTMLImageElementOrNull = HTMLImageElement | null;
 type HTMLElementOrNull = HTMLElement | null;

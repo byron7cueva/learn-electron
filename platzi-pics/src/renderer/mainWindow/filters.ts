@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import filterous from "./lib/filterous2-2.0.0.min";
+import filterous from '../lib/filterous2-2.0.0.min';
 import fs from 'fs-extra';
 
 /**

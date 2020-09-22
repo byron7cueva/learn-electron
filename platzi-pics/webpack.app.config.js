@@ -6,7 +6,10 @@ module.exports = {
     extensions: [".ts", ".js"],
     mainFields: ["main", "module", "browser"],
   },
-  entry: "./src/renderer/app.ts",
+  entry: {
+    index: "./src/renderer/mainWindow/app.ts",
+    preferences: "./src/renderer/prefsWindow/preferences.ts"
+  },
   target: "electron-renderer",
   devtool: "source-map",
   module: {
@@ -57,7 +60,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
+      chunks:['index'],
       template: path.resolve(__dirname, "src/renderer/index.html"),
+    }),
+    new HtmlWebpackPlugin({
+      chunks: ['preferences'],
+      filename: 'preferences.html',
+      template: path.resolve(__dirname, "src/renderer/preferences.html")
     })
   ],
 };
