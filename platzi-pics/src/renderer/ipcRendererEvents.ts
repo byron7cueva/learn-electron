@@ -1,5 +1,6 @@
 /* eslint-disable unicorn/prevent-abbreviations */
 import { ipcRenderer, IpcRendererEvent } from 'electron';
+import path from 'path';
 
 import {
   addImageEvents,
@@ -24,6 +25,10 @@ function setIpc(): void {
     addImageEvents();
     selectFirstImage();
   });
+
+  ipcRenderer.on('save-image', (event: IpcRendererEvent, file: string) => {
+    console.log(file);
+  });
 }
 
 /**
@@ -35,14 +40,27 @@ function sendIpc(): void {
 }
 
 /**
- * Event to emit to main process for open directory 
+ * Emit event to main process for open directory 
  */
 function openDirectory(): void {
   ipcRenderer.send('open-directory');
 }
 
+/**
+ * Event event to main process for save file
+ */
+function saveFile(): void {
+  const image: HTMLImageElement | null = document.querySelector('#image-displayed');
+  if (image) {
+    const ext = path.extname(image.dataset.original);
+    ipcRenderer.send('open-save-dialog', ext);
+  }
+}
+
+
 export {
   setIpc,
   sendIpc,
-  openDirectory
+  openDirectory,
+  saveFile
 }

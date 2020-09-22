@@ -20,6 +20,7 @@ import isImage from 'is-image';
 import fileSize from 'filesize';
 
 import devtools from './devtools';
+import { dir } from "console";
 
 // Ver lo que tiene el objeto
 // console.dir(app)
@@ -110,7 +111,7 @@ ipcMain.on('open-directory', async (event: IpcMainEvent) => {
       properties: ['openDirectory']
     });
     let images: object[] = [];
-    if (dir.filePaths.length > 0) {
+    if (dir.canceled && dir.filePaths.length > 0) {
       const directory = dir.filePaths[0];
       fs.readdir(dir.filePaths[0], (error: NodeJS.ErrnoException | null, files: string[]): void => {
         if (error) throw error;
@@ -127,6 +128,22 @@ ipcMain.on('open-directory', async (event: IpcMainEvent) => {
       });
     }    
   } catch(error: Error) {
+    console.error(error.message)
+  }
+});
+
+ipcMain.on('open-save-dialog', async (event: IpcMainEvent, ext: string) => {
+  try {
+    const result = await dialog.showSaveDialog(mainWindow, {
+      title: 'Guardar imagen modificada',
+      buttonLabel: 'Guardar imagen',
+      filters: [{name: 'Images', extensions: [ext.substr(1)]}],
+      defaultPath: `name${ext}`,
+    });
+    if(result.canceled) return;
+
+    event.sender.send('save-image', result.filePath);
+  } catch(error) {
     console.error(error.message)
   }
 });

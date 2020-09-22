@@ -41,6 +41,7 @@ function changeImage(liElement: HTMLElementOrNull): void {
 
   if (imageDisplayed) {
     imageDisplayed.src = source;
+    imageDisplayed.dataset.original = source;
   }
 }
 

@@ -1,7 +1,11 @@
 import 'photonkit/dist/css/photon.css';
 import '../assets/css/main.css';
 
-import {setIpc, openDirectory} from './ipcRendererEvents';
+import {
+  setIpc,
+  openDirectory,
+  saveFile
+} from './ipcRendererEvents';
 import {
   addImageEvents,
   searchImagesEvent,
@@ -14,6 +18,7 @@ window.addEventListener('load', () => {
   searchImagesEvent();
   selectEvent();
   handleClickEvent('open-directory', openDirectory);
+  handleClickEvent('save-button', saveFile);
 });
 
 /**
