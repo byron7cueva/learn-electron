@@ -1,7 +1,7 @@
 import url, {Url} from 'url';
 import path from 'path';
 
-import applyFilter from './filters';
+import {applyFilter} from './filters';
 import { LiImage } from './LiImage';
 
 type HTMLImageElementOrNull = HTMLImageElement | null;
@@ -43,6 +43,9 @@ function changeImage(liElement: HTMLElementOrNull): void {
     imageDisplayed.src = source;
     imageDisplayed.dataset.original = source;
   }
+
+  const select: HTMLSelectElement | null = document.querySelector('#filters');
+  select.selectedIndex = 0;
 }
 
 /**

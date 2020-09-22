@@ -9,6 +9,7 @@ import {
   loadImages
 } from './imagesUi';
 import { LiImage } from './LiImage';
+import { saveImage } from './filters';
 
 /**
  * On the lintening pong event
@@ -27,7 +28,7 @@ function setIpc(): void {
   });
 
   ipcRenderer.on('save-image', (event: IpcRendererEvent, file: string) => {
-    console.log(file);
+    saveImage(file);
   });
 }
 
