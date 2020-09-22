@@ -20,7 +20,7 @@ import isImage from 'is-image';
 import fileSize from 'filesize';
 
 import devtools from './devtools';
-import { dir } from "console";
+import handleErrors from './handleErrors';
 
 // Ver lo que tiene el objeto
 // console.dir(app)
@@ -50,6 +50,8 @@ function createWindow() {
       // worldSafeExecuteJavaScript: true
     },
   });
+
+  handleErrors(mainWindow);
 
   // Evento que se ejecuta cuando la ventana es movida
   mainWindow.on('move', () => {

@@ -65,3 +65,9 @@ npm install --global windows-build-tools
 * ipcRender: Es el objeto que corre en el proceso de renderizado y permite comunicarse con el main process.
 * ipcMain: Protocolo de comunicación para el proceso principal.
 
+## Errores
+
+* Eventos de crashed: Son eventos cuando la pantalla muere.
+* unresponsive: Cuando la pantalla no responde
+* uncaughtException: Son las excepciones que no fueron manejadas.
+
