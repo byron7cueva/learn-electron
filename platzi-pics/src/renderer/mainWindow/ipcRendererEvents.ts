@@ -2,6 +2,7 @@
 import { ipcRenderer, IpcRendererEvent, remote } from 'electron';
 import path from 'path';
 import * as url from "url";
+//import os from 'os';
 
 import {
   addImageEvents,
@@ -113,6 +114,12 @@ function openPreferences(): void {
     });
   }
   void preferencesWindow.loadURL(indexPath);
+
+  // Se Omite windows
+  // La version 10 de electron ya soportan todas las plataformas setParentWindow
+  /* if (os.platform() !== 'win32') {
+    preferencesWindow.setParentWindow(remote.getGlobal('mainWindow'));
+  } */
 
   preferencesWindow.webContents.once('did-frame-finish-load', () => {
     preferencesWindow.show();
