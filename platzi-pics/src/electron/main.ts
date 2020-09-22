@@ -148,6 +148,15 @@ ipcMain.on('open-save-dialog', async (event: IpcMainEvent, ext: string) => {
   }
 });
 
+ipcMain.on('show-dialog', (event: IpcMainEvent, options: any) => {
+  dialog.showMessageBox(mainWindow, {
+    type: options.type,
+    title: options.title,
+    message: options.message,
+    buttons: ['Ok']
+  });
+});
+
 /**
  * Funtion execute when quit application
  */

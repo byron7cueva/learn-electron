@@ -28,7 +28,10 @@ function setIpc(): void {
   });
 
   ipcRenderer.on('save-image', (event: IpcRendererEvent, file: string) => {
-    saveImage(file);
+    saveImage(file, (error: NodeJS.ErrnoException | null) => {
+      if(error) return showDialod('error', 'Platzipics', error.message);
+      showDialod('info', 'Platzipics', 'La imagen fue guardada');
+    });
   });
 }
 
@@ -58,6 +61,9 @@ function saveFile(): void {
   }
 }
 
+function showDialod(type: string, title: string, message: string): void {
+  ipcRenderer.send('show-dialog', {type, title, message});
+}
 
 export {
   setIpc,

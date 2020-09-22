@@ -22,15 +22,14 @@ function applyFilter(filter: string, currentImage: HTMLImageElement): void {
  * Save image
  * 
  * @param {string} fileName Name of file
+ * @param {Function} callback Callback
  */
-function saveImage(fileName: string): void {
+function saveImage(fileName: string, callback: (error: NodeJS.ErrnoException | null) => void): void {
   const image: HTMLImageElement | null = document.querySelector('#image-displayed');
   if (image) {
     let fileSource = image.src;
     fileSource = fileSource?.replace(/^data:([+/A-Za-z-]+);base64,/,'');
-    fs.writeFile(fileName, fileSource, 'base64', (error: NodeJS.ErrnoException | null) => {
-      if(error) console.error(error.message);
-    })
+    fs.writeFile(fileName, fileSource, 'base64', callback)
   }
 }
 
