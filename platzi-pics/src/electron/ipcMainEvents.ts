@@ -13,6 +13,7 @@ import settings from 'electron-settings';
 import crypto from 'crypto';
 
 import {LiImage} from '../types/LiImage';
+import { env } from 'process';
 
 interface DialogMessageOptions {
   type: string;
@@ -72,7 +73,10 @@ function setupHandleEvents(mainWindow: BrowserWindow): void {
   });
 
   ipcMain.on('upload-image', (event: IpcMainEvent, imagePath: string) => {
-    void uploadImage(imagePath);
+    void uploadImage(imagePath)
+      .then(() => {
+        event.sender.send('finish-upload');
+      });
   });
 }
 
@@ -109,7 +113,7 @@ function showDialod(mainWindow: BrowserWindow, options: DialogMessageOptions) {
   });
 }
 
-async function uploadImage(imagePath: string): Promise<void> {
+async function uploadImage(imagePath: string): Promise<boolean> {
   try {
     const hasHost = await settings.has('ftp.host');
     const hasPort = await settings.has('ftp.port');
@@ -139,12 +143,14 @@ async function uploadImage(imagePath: string): Promise<void> {
         message: 'Imagen cargada al ftp con exito',
         type: 'info'
       });
+      return true;
   } else {
     showDialod(globalThis.mainWindow, {
       title: 'Platzipics',
       message: 'Por favor complete las preferencias del ftp',
       type: 'error'
     });
+    return false;
   }
   } catch(error: unknown) {
     showDialod(globalThis.mainWindow, {
@@ -152,6 +158,7 @@ async function uploadImage(imagePath: string): Promise<void> {
       message: 'Verifique su conexión y/o verifique sus credenciales del ftp',
       type: 'error'
     });
+    return false;
   }
 }
 

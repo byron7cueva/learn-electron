@@ -47,6 +47,10 @@ async function setIpc(): Promise<void> {
     });
   });
 
+  ipcRenderer.on('finish-upload', () => {
+    toLoading(false);
+  });
+
   const has = await settings.has('directory');
   if (has) {
     const directory = await settings.get('directory');
@@ -145,6 +149,7 @@ function uploadImage(): void {
     } else {
       image = imageEle.src;
     }
+    toLoading(true);
     ipcRenderer.send('upload-image', image);
     // Guardando la dirección al portapapeles
     clipboard.writeText(image);
@@ -165,6 +170,15 @@ function pasteImage(): void {
     }
   } else {
     showDialod('error', 'Platzipics', 'No hay una imagen válida en el porta papeles');
+  }
+}
+
+function toLoading(active: boolean) {
+  const overlay = document.querySelector('#overlay');
+  if (active) {
+    overlay?.classList.remove('hidden');
+  } else {
+    overlay?.classList.add('hidden');
   }
 }
 
