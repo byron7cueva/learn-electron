@@ -34,6 +34,10 @@ async function setIpc(): Promise<void> {
   ipcRenderer.on('save-image', (event: IpcRendererEvent, file: string) => {
     saveImage(file, (error: NodeJS.ErrnoException | null) => {
       if(error) return showDialod('error', 'Platzipics', error.message);
+      const image: HTMLImageElement | null = document.querySelector('#image-displayed');
+      if (image) {
+        image.dataset.filtered = file;
+      }
       showDialod('info', 'Platzipics', 'La imagen fue guardada');
     });
   });
@@ -80,7 +84,7 @@ function showDialod(type: string, title: string, message: string): void {
 function openPreferences(): void {
   const preferencesWindow = new BrowserWindow({
     width: 400,
-    height: 300,
+    height: 400,
     title: 'Preferences',
     center: true,
     modal: true,
@@ -126,9 +130,24 @@ function openPreferences(): void {
   });
 }
 
+function uploadImage(): void {
+  const imageEle: HTMLImageElement | null = document.querySelector('#image-displayed');
+
+  if (imageEle) {
+    let image;
+    if (imageEle.dataset.filtered) {
+      image = imageEle.dataset.filtered;
+    } else {
+      image = imageEle.src;
+    }
+    ipcRenderer.send('upload-image', image); 
+  }
+}
+
 export {
   setIpc,
   openDirectory,
   saveFile,
-  openPreferences
+  openPreferences,
+  uploadImage
 }

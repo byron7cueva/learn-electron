@@ -5,7 +5,8 @@ import {
   setIpc,
   openDirectory,
   saveFile,
-  openPreferences
+  openPreferences,
+  uploadImage
 } from './ipcRendererEvents';
 import {
   addImageEvents,
@@ -25,6 +26,7 @@ window.addEventListener('load', () => {
   handleClickEvent('save-button', saveFile);
   handleClickEvent('open-preferences', openPreferences);
   handleClickEvent('print-button', print);
+  handleClickEvent('upload-button', uploadImage);
 });
 
 /**
