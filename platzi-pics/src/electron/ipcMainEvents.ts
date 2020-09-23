@@ -13,7 +13,7 @@ import settings from 'electron-settings';
 import crypto from 'crypto';
 
 import {LiImage} from '../types/LiImage';
-import { env } from 'process';
+import { ResponseProcess } from '../types/ResponseProcess';
 
 interface DialogMessageOptions {
   type: string;
@@ -74,8 +74,8 @@ function setupHandleEvents(mainWindow: BrowserWindow): void {
 
   ipcMain.on('upload-image', (event: IpcMainEvent, imagePath: string) => {
     void uploadImage(imagePath)
-      .then(() => {
-        event.sender.send('finish-upload');
+      .then((response: ResponseProcess) => {
+        event.sender.send('finish-upload', response);
       });
   });
 }
@@ -113,7 +113,7 @@ function showDialod(mainWindow: BrowserWindow, options: DialogMessageOptions) {
   });
 }
 
-async function uploadImage(imagePath: string): Promise<boolean> {
+async function uploadImage(imagePath: string): Promise<ResponseProcess> {
   try {
     const hasHost = await settings.has('ftp.host');
     const hasPort = await settings.has('ftp.port');
@@ -138,27 +138,16 @@ async function uploadImage(imagePath: string): Promise<boolean> {
       const client = new Client();
       await client.access({host, port, user, password});
       await client.uploadFrom(fs.createReadStream(pathUpload), fileName);
-      showDialod(globalThis.mainWindow, {
-        title: 'Platzipics',
-        message: 'Imagen cargada al ftp con exito',
-        type: 'info'
-      });
-      return true;
-  } else {
-    showDialod(globalThis.mainWindow, {
-      title: 'Platzipics',
-      message: 'Por favor complete las preferencias del ftp',
-      type: 'error'
-    });
-    return false;
-  }
-  } catch(error: unknown) {
-    showDialod(globalThis.mainWindow, {
-      title: 'Platzipics',
-      message: 'Verifique su conexión y/o verifique sus credenciales del ftp',
-      type: 'error'
-    });
-    return false;
+      return {
+        success: true,
+        data: `ftp://${host}/${fileName}`,
+        message: 'Imagen cargada al ftp con exito'
+      };
+    } else {
+      return {success: false, message: 'Por favor complete las preferencias del ftp'};
+    }
+  } catch {
+    return {success: false, message: 'Verifique su conexión y/o verifique sus credenciales del ftp'};
   }
 }
 

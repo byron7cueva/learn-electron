@@ -3,7 +3,8 @@ import {
   ipcRenderer,
   IpcRendererEvent,
   remote,
-  clipboard
+  clipboard,
+  shell
 } from 'electron';
 import path from 'path';
 import * as url from "url";
@@ -16,6 +17,7 @@ import {
   loadImages
 } from './imagesUi';
 import { LiImage } from '../../types/LiImage';
+import { ResponseProcess } from '../../types/ResponseProcess';
 import { saveImage } from './filters';
 
 const { BrowserWindow } = remote;
@@ -47,8 +49,25 @@ async function setIpc(): Promise<void> {
     });
   });
 
-  ipcRenderer.on('finish-upload', () => {
+  ipcRenderer.on('finish-upload', (event: IpcRendererEvent, response: ResponseProcess) => {
     toLoading(false);
+    if (response.success) {
+      const urlImage = encodeURI(response.data);
+      // Guardando la dirección al portapapeles
+      clipboard.writeText(urlImage);
+      const notify = new Notification('Platzipics', {
+        body: `${response.message}
+              \r a: ${urlImage}
+              \rDe click para abrir la url`,
+        silent: false
+      });
+  
+      notify.addEventListener('click', () => {
+        shell.openExternal(urlImage);
+      });
+    } else {
+      showDialod('error', 'Platzipics', response.message);
+    }
   });
 
   const has = await settings.has('directory');
@@ -151,8 +170,6 @@ function uploadImage(): void {
     }
     toLoading(true);
     ipcRenderer.send('upload-image', image);
-    // Guardando la dirección al portapapeles
-    clipboard.writeText(image);
   }
 }
 

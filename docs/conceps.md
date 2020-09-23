@@ -92,7 +92,15 @@ npm install --global windows-build-tools
 ### API Clibboard
 
 * Portapapeles.
-* 
+
+## Notification
+
+* Es el API de notificaciones del navegador.
+* Electron no requiere de ningun permiso para lanzarlas, electron hace bypass de esto.
+
+### Api Shell
+
+* Es un API que permite abrir externamente una url.
 
 
 
