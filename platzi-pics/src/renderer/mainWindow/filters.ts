@@ -11,7 +11,7 @@ import fs from 'fs-extra';
  */
 function applyFilter(filter: string, currentImage: HTMLImageElement): void {
   const imgObject = new Image();
-  imgObject.src = currentImage.src;
+  imgObject.src = currentImage.dataset.original;
   
   filterous.importImage(imgObject, {})
     .applyInstaFilter(filter)

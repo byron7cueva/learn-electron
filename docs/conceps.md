@@ -89,3 +89,10 @@ npm install --global windows-build-tools
 * Hay limitaciones por sistema operativo, sobre todo en Linux ya que este maneja muchos entornos graficos.
 * Los iconos para windows son .ico y para mac y linux son .png.
 
+### API Clibboard
+
+* Portapapeles.
+* 
+
+
+

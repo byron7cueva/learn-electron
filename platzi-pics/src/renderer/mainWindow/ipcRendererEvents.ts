@@ -1,5 +1,10 @@
 /* eslint-disable unicorn/prevent-abbreviations */
-import { ipcRenderer, IpcRendererEvent, remote } from 'electron';
+import {
+  ipcRenderer,
+  IpcRendererEvent,
+  remote,
+  clipboard
+} from 'electron';
 import path from 'path';
 import * as url from "url";
 import settings from 'electron-settings';
@@ -140,7 +145,26 @@ function uploadImage(): void {
     } else {
       image = imageEle.src;
     }
-    ipcRenderer.send('upload-image', image); 
+    ipcRenderer.send('upload-image', image);
+    // Guardando la dirección al portapapeles
+    clipboard.writeText(image);
+  }
+}
+
+function pasteImage(): void {
+  const image = clipboard.readImage()
+  // Devuelve la información de la imagen en base64
+  const data = image.toDataURL();
+
+  // El clipboard devuelve la información en png
+  if(data.includes('data:image/png;base64') && !image.isEmpty()) {
+    const imgEle: HTMLImageElement | null = document.querySelector('#image-displayed');
+    if (imgEle) {
+      imgEle.src = data;
+      imgEle.dataset.original = data;
+    }
+  } else {
+    showDialod('error', 'Platzipics', 'No hay una imagen válida en el porta papeles');
   }
 }
 
@@ -149,5 +173,6 @@ export {
   openDirectory,
   saveFile,
   openPreferences,
-  uploadImage
+  uploadImage,
+  pasteImage
 }
