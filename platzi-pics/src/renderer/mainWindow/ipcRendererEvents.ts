@@ -26,7 +26,8 @@ async function setIpc(): Promise<void> {
     selectFirstImage();
     void settings.set('directory', directory)
     .then(() => {
-      console.log(settings.file());
+      const directoryEle = document.querySelector('#directory');
+      if (directoryEle) directoryEle.innerHTML = directory;
     });
   });
 
