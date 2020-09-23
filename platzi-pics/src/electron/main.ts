@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // app: Permite controlar el ciclo de vida de la aplicación
 // y diferentes evente, a traves de este puede ejecutar la aplicació
 // reiniciarla entre otras acciones
@@ -9,9 +10,11 @@ import {
   BrowserWindow,
   protocol,
   ProtocolRequest,
+  Tray
 } from "electron";
 import path from "path";
 import * as url from "url";
+import os from 'os';
 
 import devtools from './devtools';
 import handleErrors from './handleErrors';
@@ -24,6 +27,8 @@ import setupHandleMainEvents from './ipcMainEvents';
 declare global {
   // eslint-disable-next-line no-var
   var mainWindow: BrowserWindow | undefined;
+  // eslint-disable-next-line no-var
+  var tray: Tray;
 }
 
 /**
@@ -81,6 +86,8 @@ function createWindow() {
     app.quit();
   });
 
+  void setupTray();
+
   let indexPath = '';
   if(process.env.NODE_ENV === "development") {
     indexPath = url.format({
@@ -105,6 +112,30 @@ function createWindow() {
  */
 function quitApp(): void {
   console.log('Saliendo');
+}
+
+/**
+ * Setup tray
+ */
+async function setupTray(): Promise<void> {
+  try {
+    let module;
+    // Validando que plataforma es
+    if (os.platform() === 'win32') {
+      module = await import('../assets/icons/tray-icon.ico');
+    } else {
+      module = await import('../assets/icons/tray-icon.png');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    globalThis.tray = new Tray(module.default);
+    globalThis.tray.setToolTip('Platzipics');
+    globalThis.tray.on('click', () => {
+      globalThis.mainWindow?.isVisible() ? globalThis.mainWindow?.hide() : globalThis.mainWindow?.show();
+    });
+  } catch(error: unknown) {
+    console.error(error);
+  }
 }
 
 // Para poder mostrar la ventana de debe esperar que la aplicacione esta lista

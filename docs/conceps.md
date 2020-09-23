@@ -82,3 +82,10 @@ npm install --global windows-build-tools
 * Sqlite
 * Archivo en una ruta especifica. Electron ofrece una forma de guardar en las preferencias del usuario.
 
+## API Tray
+
+* Solo esta disponible en el Main Process.
+* Es un EventEmitter.
+* Hay limitaciones por sistema operativo, sobre todo en Linux ya que este maneja muchos entornos graficos.
+* Los iconos para windows son .ico y para mac y linux son .png.
+
