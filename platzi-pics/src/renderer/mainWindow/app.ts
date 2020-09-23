@@ -12,10 +12,11 @@ import {
   searchImagesEvent,
   selectEvent,
   selectFirstImage,
+  print
 } from './imagesUi';
 
 window.addEventListener('load', () => {
-  setIpc();
+  void setIpc();
   addImageEvents();
   searchImagesEvent();
   selectEvent();
@@ -23,6 +24,7 @@ window.addEventListener('load', () => {
   handleClickEvent('open-directory', openDirectory);
   handleClickEvent('save-button', saveFile);
   handleClickEvent('open-preferences', openPreferences);
+  handleClickEvent('print-button', print);
 });
 
 /**

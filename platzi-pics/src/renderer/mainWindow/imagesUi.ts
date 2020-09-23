@@ -141,6 +141,10 @@ function templateLiImage(image: LiImage): string {
   `;
 }
 
+function print(): void {
+  window.print();
+}
+
 export {
   addImageEvents,
   changeImage,
@@ -149,5 +153,6 @@ export {
   searchImagesEvent,
   clearImages,
   loadImages,
-  templateLiImage
+  templateLiImage,
+  print
 }
