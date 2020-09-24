@@ -16,8 +16,10 @@ import {
   selectFirstImage,
   print
 } from './imagesUi';
+import createMenu from './menu';
 
 window.addEventListener('load', () => {
+  createMenu();
   void setIpc();
   addImageEvents();
   searchImagesEvent();
