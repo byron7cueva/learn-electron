@@ -10,7 +10,8 @@ import {
   BrowserWindow,
   protocol,
   ProtocolRequest,
-  Tray
+  Tray,
+  globalShortcut
 } from "electron";
 import path from "path";
 import * as url from "url";
@@ -44,7 +45,7 @@ function createWindow() {
   globalThis.mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    title: 'Hola mundo',
+    title: 'Platzipics',
     center: true,
     maximizable: false,
     show: false,
@@ -56,6 +57,13 @@ function createWindow() {
       enableRemoteModule: true,
       // worldSafeExecuteJavaScript: true
     },
+  });
+
+  // Los shortcut globales por lo general estan registrado por el sistema operativo
+  // Se debe buscar uno que no este ocupado hay que tener cuidado en no sobrescribirlo
+  globalShortcut.register('CommandOrControl+Alt+p', () => {
+    globalThis.mainWindow?.show();
+    globalThis.mainWindow?.focus();
   });
 
   setupHandleMainEvents(globalThis.mainWindow);
@@ -111,7 +119,8 @@ function createWindow() {
  * Funtion execute when quit application
  */
 function quitApp(): void {
-  console.log('Saliendo');
+  // Quitando el registro de los shortcups al salir de la aplicación
+  globalShortcut.unregisterAll();
 }
 
 /**

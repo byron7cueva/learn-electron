@@ -8,22 +8,30 @@ import {
 } from './ipcRendererEvents';
 import {print} from './imagesUi';
 
-function createMenu() {
+/**
+ * Create the Menu
+ */
+function createMenu(): void {
   const template = [
     {
       label: 'Archivo',
       submenu: [
         {
           label: 'Abrir ubicación',
-          click: openDirectory
+          click: openDirectory,
+          // Shortcuts locales
+          // Debe estar enfocada la aplicación para que pueda funcionar
+          accelerator: 'CmdOrCtrl+O'
         },
         {
           label: 'Guardar',
-          click: saveFile
+          click: saveFile,
+          accelerator: 'CmdOrCtrl+G'
         },
         {
           label: 'Preferences',
-          click: openPreferences
+          click: openPreferences,
+          accelerator: 'CmdOrCtrl+,'
         },
         {
           label: 'Cerrar',
@@ -37,15 +45,18 @@ function createMenu() {
       submenu: [
         {
           label: 'Imprimir',
-          click: print
+          click: print,
+          accelerator: 'CmdOrCtrl+P'
         },
         {
           label: 'Subir ftp',
-          click: uploadImage
+          click: uploadImage,
+          accelerator: 'CmdOrCtrl+U'
         },
         {
           label: 'Pegar imagen',
-          click: pasteImage
+          click: pasteImage,
+          accelerator: 'CmdOrCtrl+V'
         }
       ]
     }
