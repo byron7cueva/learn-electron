@@ -57,6 +57,12 @@ function createMenu(): void {
           label: 'Pegar imagen',
           click: pasteImage,
           accelerator: 'CmdOrCtrl+V'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          role: 'toggledevtools'
         }
       ]
     }

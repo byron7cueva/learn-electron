@@ -138,8 +138,8 @@ function openPreferences(): void {
     });
   } else {
     indexPath = url.format({
-      protocol: "file:",
-      pathname: path.join(__dirname, "preferences.html"),
+      protocol: "plp:",
+      pathname: path.join(remote.getGlobal('dirname'), 'preferences.html'),
       slashes: true,
     });
   }

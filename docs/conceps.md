@@ -102,5 +102,11 @@ npm install --global windows-build-tools
 
 * Es un API que permite abrir externamente una url.
 
+## Generar ejecutables
+
+* electron-packager
+* electron-builder
+* electron-forge
+
 
 

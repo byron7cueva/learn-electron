@@ -21,6 +21,8 @@ import devtools from './devtools';
 import handleErrors from './handleErrors';
 import setupHandleMainEvents from './ipcMainEvents';
 
+import iconApp from '../assets/icons/icon.png';
+
 // Ver lo que tiene el objeto
 // console.dir(app)
 
@@ -30,17 +32,21 @@ declare global {
   var mainWindow: BrowserWindow | undefined;
   // eslint-disable-next-line no-var
   var tray: Tray;
+  // eslint-disable-next-line no-var
+  var dirname: string;
 }
+
+globalThis.dirname = __dirname;
 
 /**
  * Create the principal window
  */
 function createWindow() {
   /* Protocolo personalizado */
-  protocol.registerFileProtocol('file', (request: ProtocolRequest, callback) => {
+  /*protocol.registerFileProtocol('file', (request: ProtocolRequest, callback) => {
     const pathname = decodeURI(request.url.replace('file:///', ''));
     callback(pathname);
-  });
+  });*/
 
   // El nombre de protocolo debe ir el nombre de la aplicacion
   // aqui se lo abrevia a plp
@@ -50,8 +56,6 @@ function createWindow() {
     // eslint-disable-next-line unicorn/prefer-string-slice
     const url = request.url.substr(6); // 6 porque nuestro protocolo va se plp://
     callback({path: path.normalize(url)});
-  }, (error: unknown) => {
-    if (error) throw error;
   });
 
   globalThis.mainWindow = new BrowserWindow({
@@ -61,6 +65,7 @@ function createWindow() {
     center: true,
     maximizable: false,
     show: false,
+    icon: path.join(__dirname,iconApp),
     webPreferences: {
       nodeIntegration: true,
       nodeIntegrationInWorker: true,
@@ -149,7 +154,7 @@ async function setupTray(): Promise<void> {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    globalThis.tray = new Tray(module.default);
+    globalThis.tray = new Tray(path.join(__dirname, module.default));
     globalThis.tray.setToolTip('Platzipics');
     globalThis.tray.on('click', () => {
       globalThis.mainWindow?.isVisible() ? globalThis.mainWindow?.hide() : globalThis.mainWindow?.show();
