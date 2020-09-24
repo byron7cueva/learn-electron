@@ -36,10 +36,22 @@ declare global {
  * Create the principal window
  */
 function createWindow() {
-  /* Support to file protocol */
+  /* Protocolo personalizado */
   protocol.registerFileProtocol('file', (request: ProtocolRequest, callback) => {
     const pathname = decodeURI(request.url.replace('file:///', ''));
     callback(pathname);
+  });
+
+  // El nombre de protocolo debe ir el nombre de la aplicacion
+  // aqui se lo abrevia a plp
+  // intercepta todas las llamadas que la aplicacion realiza para los recursos
+  // para que a la hora de empaquetar no tengamos problemas
+  protocol.registerFileProtocol('plp', (request: ProtocolRequest, callback) => {
+    // eslint-disable-next-line unicorn/prefer-string-slice
+    const url = request.url.substr(6); // 6 porque nuestro protocolo va se plp://
+    callback({path: path.normalize(url)});
+  }, (error: unknown) => {
+    if (error) throw error;
   });
 
   globalThis.mainWindow = new BrowserWindow({

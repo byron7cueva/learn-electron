@@ -97,7 +97,7 @@ function loadImages(event: IpcMainEvent, filePath: string) {
         const imageFile = path.join(directory, filename);
         const stats = fs.statSync(imageFile);
         const size = fileSize(stats.size, {round: 0});
-        images.push({filename, src: `file://${imageFile}`, size});
+        images.push({filename, src: `plp://${imageFile}`, size});
       }
     });
     event.sender.send('load-images', filePath, images);
@@ -132,7 +132,7 @@ async function uploadImage(imagePath: string): Promise<ResponseProcess> {
       const decrypted = decipher.update(<string>encrypted, 'base64', 'utf8');
       const password = (decrypted + decipher.final('utf8'));
 
-      let pathUpload = imagePath.replace('file://', '');
+      let pathUpload = imagePath.replace('plp://', '');
       pathUpload = decodeURI(pathUpload);
       const fileName = path.basename(pathUpload);
       const client = new Client();

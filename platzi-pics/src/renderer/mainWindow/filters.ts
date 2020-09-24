@@ -31,8 +31,8 @@ function saveImage(fileName: string, callback: (error: NodeJS.ErrnoException | n
     if (fileSource.includes(';base64,')) {
       fileSource = fileSource?.replace(/^data:([+/A-Za-z-]+);base64,/,'');
       fs.writeFile(fileName, fileSource, 'base64', callback)
-    } else if (fileSource.includes('file://')) {
-      fileSource = fileSource.replace('file://', '');
+    } else if (fileSource.includes('plp://')) {
+      fileSource = fileSource.replace('plp://', '');
       fs.copy(fileSource, fileName, callback);
     }
   }
