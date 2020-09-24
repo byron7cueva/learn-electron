@@ -1,8 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCSSExtractPlugin = require('mini-css-extract-plugin');
-const TerserJSPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
   resolve: {
@@ -27,17 +24,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: MiniCSSExtractPlugin.loader,
-            options: {
-              publicPath: '..',
-            },
-          },
-          { loader: 'css-loader', options: { sourceMap: false } }
+          'style-loader',
+          'css-loader'
         ]
       },
       {
-        test: /\.(jpg|png|gif)$/,
+        test: /\.(jpg|png|gif|woff|eot|ttf|svg)$/,
         use: [
           {
             loader: "file-loader",
@@ -45,18 +37,6 @@ module.exports = {
               outputPath: 'assets/',
               name: "[name].[ext]",
               esModule: true
-            }
-          }
-        ],
-      },
-      {
-        test: /\.(woff|eot|ttf|svg)$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              outputPath: 'fonts/',
-              name: "[name].[ext]"
             }
           }
         ],
@@ -80,10 +60,6 @@ module.exports = {
     filename: "js/[name].js",
   },
   plugins: [
-    new MiniCSSExtractPlugin({
-      filename: 'css/[name].css',
-      chunkFilename: '[id].css',
-    }),
     new HtmlWebpackPlugin({
       chunks:['index'],
       template: path.resolve(__dirname, "src/renderer/index.html"),
@@ -94,7 +70,4 @@ module.exports = {
       template: path.resolve(__dirname, "src/renderer/preferences.html")
     })
   ],
-  optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
-  }
 };
