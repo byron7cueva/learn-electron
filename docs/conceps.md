@@ -40,6 +40,12 @@ npm install --global windows-build-tools
 
 * Permite escribir en diferentes tecnologías que no estan soportadas de forma nativa en html y compila el código en tiempo de ejecucion para despreocuparse de ese paso.
 
+```shell
+npm i -D electron
+```
+
+
+
 *cross-env:* Módulo para que se utilice las variables de entorno sin importar como se definen en los distintos sistemas operativos.
 
 ```json
@@ -140,7 +146,7 @@ npx @electron-forge/cli import
 
 ## Probar aplicaciones electron.
 
-* Electron utiliza Spectron, el cual utilizan ChromeDriver y WebDriverIO. Capturan la ventana de electron y permiten correr testing.
+* Electron utiliza Spectron, el cual utilizan ChromeDriver y WebDriverIO. Capturan la ventana de electron y permiten correr testing. Trabaja con ava
 
 
 

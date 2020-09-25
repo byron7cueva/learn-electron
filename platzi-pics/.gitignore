@@ -1,6 +1,5 @@
 node_modules/
 dist/
 release/
-npm-debug.log
-debug.log
+*.log
 out/
