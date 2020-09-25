@@ -3,4 +3,3 @@ dist/
 release/
 npm-debug.log
 debug.log
-modules-manifest.json

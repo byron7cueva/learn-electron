@@ -5,6 +5,8 @@ const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = {
+  mode: "production",
+  devtool: false,
   resolve: {
     extensions: [".ts", ".js"],
     mainFields: ["main", "module", "browser"],
@@ -22,6 +24,7 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
+          options: { sourceMap: false }
         },
       },
       {
@@ -67,22 +70,14 @@ module.exports = {
       }
     ],
   },
-  devServer: {
-    contentBase: path.join(__dirname, "../dist/renderer"),
-    historyApiFallback: true,
-    compress: true,
-    hot: true,
-    port: 4000,
-    publicPath: "/",
-  },
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "js/[name].js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'js/[name].js'
   },
   plugins: [
     new MiniCSSExtractPlugin({
       filename: 'css/[name].css',
-      chunkFilename: '[id].css',
+      chunkFilename: 'css/[id].css',
     }),
     new HtmlWebpackPlugin({
       chunks:['index'],
@@ -95,6 +90,16 @@ module.exports = {
     })
   ],
   optimization: {
-    minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          name: 'styles',
+          test: /\.css$/,
+          chunks: 'all',
+          enforce: true,
+        },
+      },
+    },
+    minimizer: [new TerserJSPlugin({sourceMap: false}), new OptimizeCSSAssetsPlugin({})]
   }
 };
