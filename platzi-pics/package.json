@@ -9,13 +9,14 @@
     "build:electron": "NODE_ENV=production webpack --config webpack.electron.config.js --mode production",
     "build:app": "NODE_ENV=production webpack --config webpack.app.config.js --mode production",
     "build": "npm run build:electron && npm run build:app",
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "dist:linux": "electron-builder --linux",
-    "dist:mac": "electron-builder --mac",
-    "dist:win": "electron-builder --win",
-    "lint": "eslint ."
+    "start": "electron-forge start",
+    "lint": "eslint .",
+    "package": "electron-forge package",
+    "package-linux": "electron-forge package --platform=linux --arch=x64",
+    "package-win": "electron-forge package --platform=win32 --arch=ia32",
+    "package-mac": "electron-forge package --platform=darwin --arch=x64",
+    "make": "electron-forge make",
+    "make-deb": "electron-forge make --platform=linux --arch=x64 --targets=@electron-forge/maker-deb"
   },
   "keywords": [],
   "author": "elisealcala",
@@ -25,12 +26,16 @@
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-typescript": "^7.10.4",
+    "@electron-forge/cli": "^6.0.0-beta.53",
+    "@electron-forge/maker-deb": "^6.0.0-beta.53",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.53",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.53",
+    "@electron-forge/maker-zip": "^6.0.0-beta.53",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.3.0",
     "electron": "^10.1.2",
-    "electron-builder": "^22.8.1",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
@@ -53,40 +58,52 @@
     "@types/node": "^14.11.1",
     "basic-ftp": "^4.6.2",
     "electron-settings": "^4.0.2",
+    "electron-squirrel-startup": "^1.0.0",
     "filesize": "^6.1.0",
     "fs.extra": "^1.3.2",
     "is-image": "^3.0.0",
     "photonkit": "^0.1.2"
   },
-  "build": {
-    "appId": "com.byron7cueva.platzipics",
-    "productName": "Platzipics",
-    "files": [
-      "dist/",
-      "node_modules/",
-      "package.json",
-      "resources/"
-    ],
-    "directories": {
-      "output": "release",
-      "buildResources": "resources"
-    },
-    "linux": {
-      "icon": "icon.png",
-      "category": "Office",
-      "target": [
-        "AppImage"
-      ]
-    },
-    "mac": {
-      "category": "public.app-category.productivity",
-      "target": [
-        "dmg"
-      ]
-    },
-    "win": {
-      "target": [
-        "nsis"
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "asar": true,
+        "icon": "resources/icon"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "platzi_pics"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {
+            "options": {
+              "section": "utils",
+              "maintainer": "byron7cueva",
+              "homepage": "byron7cueva.github.io",
+              "icon": "resources/icon.png"
+            }
+          }
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "icon": "resources/icon.icns"
+          }
+        }
       ]
     }
   }

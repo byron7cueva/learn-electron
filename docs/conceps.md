@@ -104,9 +104,45 @@ npm install --global windows-build-tools
 
 ## Generar ejecutables
 
-* electron-packager
-* electron-builder
-* electron-forge
+* electron-packager: Genera todos los ejecutables para las diferentes plataformas.
+* electron-builder: Es una suit completa, esta compuesta por un electron pakager y un generador de instaladores.
+* electron-forge: No solo ayuda a empaquetar y distribuir el instalador, también ayuda en el desarrollo de la aplicación. Mantenido por electro user lang.
+
+## Electron forge
+
+Importar el proyecto:
+
+Desde la carpeta raiz del proyecto ejcutar:
+
+```shell
+npx @electron-forge/cli import
+```
+
+### iconverticons.com
+
+* Es un sitio para exportar iconos para los diferentes sistemas operativos.
+
+## Distribución
+
+* Se debe crear instaladores para cada plataforma para que el usuario pueda instalarlo.
+* Se utiliza los make targets, estos son todos los parametros necesarios para crear los instaladores para diferentes plataformas.
+* Recomienda electron-forge para generar los instaladores para distintas plataforas, se debe crearlas en las propias plataformas ya que tienen las herramientas necesarias para que queden bien.
+* FIrmar el paquete: Tiene que ver con la seguridad de la aplicación y la distribución masiva. Con el fin de que el usuario final no corra riesgos al momento de utilizar aplicaciones. Para ello Apple y Microsoft an diseñado unos programas donde se debe tener un certificado de seguridad para poder firmar nuestras aplicaciones.
+  * Microsoft: Hay que adquirir un certificado llamado Code Signing y uno de los proveedores  es Symantec.
+  * Apple: Se debe ser miembro del programa de developers de Apple. El developer ID.
+* Con electron forge se puede especificar el certificado.
+
+## Sistemas de integración continua
+
+* Es un sistema que esta constante revisando el codigo una vez que se ha realizado cambios, sirve para correrles test, hacer tareas con cada nuevo release. Va correr ciertas tareas por nosotros. Generarian los nuevos release al publicar un release.
+* travis: Para sistemas operativos linux y mac.
+* AppVeyor: Para sistemas windows.
+
+## Probar aplicaciones electron.
+
+* Electron utiliza Spectron, el cual utilizan ChromeDriver y WebDriverIO. Capturan la ventana de electron y permiten correr testing.
+
+
 
 
 
